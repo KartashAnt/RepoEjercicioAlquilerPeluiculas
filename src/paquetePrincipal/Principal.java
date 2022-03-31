@@ -29,10 +29,10 @@ public class Principal {
 				eliminarProducto();
 				break;
 			case 3:
-				
+				listar(true, false);
 				break;
 			case 4:
-				
+				listar(false, true);
 				break;
 			case 5:
 				
