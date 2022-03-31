@@ -9,7 +9,7 @@ public class CD extends Producto{
 		super(titulo);
 		this.autor = autor;
 		super.asignarCodigo();
-		this.precio = precio;
+		this.precio = Math.round(precio*100.0)/100.0;
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ public class Principal {
 	static ArrayList<Pelicula> peliculas= new ArrayList<Pelicula>();
 	static ArrayList<CD> cds= new ArrayList<CD>();
 	static Scanner sc=new Scanner(System.in);
+	static double ganado=0;
 	public static void main(String[] args) {
 		int dia=1;
 		while(true) {
@@ -35,7 +36,7 @@ public class Principal {
 				listar(false, true);
 				break;
 			case 5:
-				
+				alquilarPeliculas();
 				break;
 			case 6:
 				
@@ -93,35 +94,33 @@ public class Principal {
 			System.out.println("Cual producto se quiere eliminar: ");
 			int eliminado=enteroNoNegativo();
 			if(eliminado>=20000) {
-				for (CD cd : cds) {
-					if (cd.getCodigo()==eliminado) {
-						System.out.println("Estas seguro que quieres eliminar el CD:");
-						System.out.println(cd);
-						System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
-						if(enteroNoNegativo()==1) {
-							cds.remove(cd);
-							System.out.println("CD borrado");
-							return;
-						}
-						System.out.println("Borrado cancelado");
+				CD cd=buscarCD(eliminado);
+				if(cd!=null) {
+					System.out.println("Estas seguro que quieres eliminar el CD:");
+					System.out.println(cd);
+					System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
+					if(enteroNoNegativo()==1) {
+						cds.remove(cd);
+						System.out.println("CD borrado");
 						return;
 					}
+					System.out.println("Borrado cancelado");
+					return;
 				}
 			}
 			else if(eliminado>=10000) {
-				for (Pelicula pelicula : peliculas) {
-					if(pelicula.getCodigo()==eliminado) {
-						System.out.println("Estas seguro que quieres eliminar la pelicula:");
-						System.out.println(pelicula);
-						System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
-						if(enteroNoNegativo()==1) {
-							peliculas.remove(pelicula);
-							System.out.println("Pelicula borrada");
-							return;
-						}
-						System.out.println("Borrado cancelado");
+				Pelicula pelicula=buscarPeli(eliminado);
+				if(pelicula!=null) {
+					System.out.println("Estas seguro que quieres eliminar la pelicula:");
+					System.out.println(pelicula);
+					System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
+					if(enteroNoNegativo()==1) {
+						peliculas.remove(pelicula);
+						System.out.println("Pelicula borrada");
 						return;
 					}
+					System.out.println("Borrado cancelado");
+					return;
 				}
 			}
 			System.out.println("El produto pedido no existe");
@@ -129,6 +128,38 @@ public class Principal {
 		else {
 			System.out.println("No hay productos para eliminar");
 		}
+	}
+	public static void listar(boolean listarPeliculas, boolean listarCDs) {
+		if(listarPeliculas) {
+			for (Pelicula pelicula : peliculas) {
+				System.out.println(pelicula);
+			}
+		}
+		if(listarCDs) {
+			for (CD cd : cds) {
+				System.out.println(cd);
+			}
+		}
+	}
+	public static void alquilarPeliculas() {
+		if (listarPeliculas(false)) {
+			System.out.println("Cual pelicula se quiere alquilar:");
+			Pelicula pelicula=buscarPeli(enteroNoNegativo());
+			if(pelicula==null) {
+				System.out.println("La pelicula no existe");
+			}
+			else if(pelicula.estaAlquilada()) {
+				System.out.println("La pelicula ya está alquilada");
+			}
+			else {
+				ganado+=pelicula.alquilarse();
+				ganado=Math.round(ganado*100.0)/100.0;
+			}
+		}
+		else {
+			System.out.println("No hay peliculas disponibles");
+		}
+		
 	}
 	//metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
@@ -192,16 +223,30 @@ public class Principal {
 		return num;
 		
 	}
-	public static void listar(boolean listarPeliculas, boolean listarCDs) {
-		if(listarPeliculas) {
-			for (Pelicula pelicula : peliculas) {
+	public static CD buscarCD(int codigo) {
+		for (CD cd : cds) {
+			if(cd.getCodigo()==codigo) {
+				return cd;
+			}
+		}
+		return null;
+	}
+	public static Pelicula buscarPeli(int codigo) {
+		for (Pelicula pelicula : peliculas) {
+			if(pelicula.getCodigo()==codigo) {
+				return pelicula;
+			}
+		}
+		return null;
+	}
+	public static boolean listarPeliculas(boolean alquiladas) {
+		boolean disponible=false;
+		for (Pelicula pelicula : peliculas) {
+			if(pelicula.estaAlquilada()==alquiladas) {
 				System.out.println(pelicula);
+				disponible=true;
 			}
 		}
-		if(listarCDs) {
-			for (CD cd : cds) {
-				System.out.println(cd);
-			}
-		}
+		return disponible;
 	}
 }
