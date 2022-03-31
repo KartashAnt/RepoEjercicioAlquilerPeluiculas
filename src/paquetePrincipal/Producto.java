@@ -18,6 +18,13 @@ public class Producto {
 			CD.proximoCodigoLibre++;
 		}
 	}
+	
+	
+	@Override
+	public String toString() {
+		return this.codigo+" "+this.titulo;
+	}
+
 	public int getCodigo() {
 		return codigo;
 	}

@@ -26,7 +26,7 @@ public class Principal {
 				introducirProducto();
 				break;
 			case 2:
-				
+				eliminarProducto();
 				break;
 			case 3:
 				
@@ -87,7 +87,49 @@ public class Principal {
 			break;
 		}
 	}
-	
+	public static void eliminarProducto() {
+		if(peliculas.size()!=0 || cds.size()!=0) {
+			listar(true, true);
+			System.out.println("Cual producto se quiere eliminar: ");
+			int eliminado=enteroNoNegativo();
+			if(eliminado>=20000) {
+				for (CD cd : cds) {
+					if (cd.getCodigo()==eliminado) {
+						System.out.println("Estas seguro que quieres eliminar el CD:");
+						System.out.println(cd);
+						System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
+						if(enteroNoNegativo()==1) {
+							cds.remove(cd);
+							System.out.println("CD borrado");
+							return;
+						}
+						System.out.println("Borrado cancelado");
+						return;
+					}
+				}
+			}
+			else if(eliminado>=10000) {
+				for (Pelicula pelicula : peliculas) {
+					if(pelicula.getCodigo()==eliminado) {
+						System.out.println("Estas seguro que quieres eliminar la pelicula:");
+						System.out.println(pelicula);
+						System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
+						if(enteroNoNegativo()==1) {
+							peliculas.remove(pelicula);
+							System.out.println("Pelicula borrada");
+							return;
+						}
+						System.out.println("Borrado cancelado");
+						return;
+					}
+				}
+			}
+			System.out.println("El produto pedido no existe");
+		}
+		else {
+			System.out.println("No hay productos para eliminar");
+		}
+	}
 	//metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
 			
@@ -149,5 +191,17 @@ public class Principal {
 		
 		return num;
 		
+	}
+	public static void listar(boolean listarPeliculas, boolean listarCDs) {
+		if(listarPeliculas) {
+			for (Pelicula pelicula : peliculas) {
+				System.out.println(pelicula);
+			}
+		}
+		if(listarCDs) {
+			for (CD cd : cds) {
+				System.out.println(cd);
+			}
+		}
 	}
 }

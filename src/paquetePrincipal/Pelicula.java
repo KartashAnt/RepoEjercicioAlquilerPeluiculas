@@ -10,6 +10,16 @@ public class Pelicula extends Producto{
 		this.tipo = tipo;
 		super.asignarCodigo();
 	}
+	
+	@Override
+	public String toString() {
+		if(this.diasAlquiler<=0) {
+			return super.toString() + " - PELICULA - " + tipo.name();
+		}
+		else {
+			return super.toString() + " - PELICULA - " + tipo.name() + " todavia lo quedan " + diasAlquiler + " dias de alquiler";
+		}
+	}
 
 	public TipoPelicula getTipo() {
 		return tipo;

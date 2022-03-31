@@ -11,6 +11,12 @@ public class CD extends Producto{
 		super.asignarCodigo();
 		this.precio = precio;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() +" - CD - de " +this.autor + " - precio: " + this.precio + " euros";
+	}
+
 	public String getAutor() {
 		return autor;
 	}
