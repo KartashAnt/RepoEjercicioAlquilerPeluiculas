@@ -2,9 +2,10 @@ package paquetePrincipal;
 
 public class Producto {
 	private int codigo;
-	
-	public Producto() {
+	private String titulo;
+	public Producto(String titulo) {
 		super();
+		this.titulo=titulo;
 	}
 
 	public void asignarCodigo() {
@@ -24,5 +25,11 @@ public class Producto {
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
-	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
 }

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
-	static ArrayList<Producto> productos= new ArrayList<Producto>();
+	static ArrayList<Pelicula> peliculas= new ArrayList<Pelicula>();
+	static ArrayList<CD> cds= new ArrayList<CD>();
 	static Scanner sc=new Scanner(System.in);
 	public static void main(String[] args) {
 		int dia=1;
@@ -22,7 +23,7 @@ public class Principal {
 			int entrada=enteroNoNegativo();
 			switch (entrada) {
 			case 1:
-				
+				introducirProducto();
 				break;
 			case 2:
 				
@@ -55,8 +56,40 @@ public class Principal {
 		}
 	}
 	
+	public static void introducirProducto() {
+		System.out.println("Introduca tipo de producto(1 para pelicula y 2 para CD):");
+		String titulo;
+		int prod=enteroNoNegativo();
+		switch (prod) {
+		case 1:
+			TipoPelicula tipo=TipoPelicula.nuevoTipo(sc);
+			System.out.println("Titulo:");
+			titulo=sc.nextLine();
+			System.out.println("Cuantas?");
+			for (int cantidad = enteroNoNegativo(); cantidad >0; cantidad--) {
+				peliculas.add(new Pelicula(tipo, titulo));
+			}
+			break;
+		case 2:
+			System.out.println("Autor:");
+			String autor=sc.nextLine();
+			System.out.println("Titulo:");
+			titulo=sc.nextLine();
+			System.out.println("Precio:");
+			double precio=decimalNoNegativo();
+			System.out.println("Cuantos?");
+			for (int cantidad = enteroNoNegativo(); cantidad >0; cantidad--) {
+				cds.add(new CD(autor, titulo, precio));
+			}
+			break;
+		default:
+			System.out.println("Opción invalida");
+			break;
+		}
+	}
+	
 	//metodo para que me introducen un int no negativo
-		public static int enteroNoNegativo() {
+	public static int enteroNoNegativo() {
 			
 			int num = 0;
 			boolean listo = false;
@@ -85,6 +118,36 @@ public class Principal {
 			
 			return num;
 			
+	}
+	//metodo para que me introducen un double no negativo
+	public static double decimalNoNegativo() {
+		
+		double num = 0;
+		boolean listo = false;
+		//Hasta el momento que no introducen un double valido
+		while (!listo) {
+			//hago try catch para estar seguro de que me introducen un double
+			try {
+				
+				num = Double.parseDouble(sc.nextLine());
+				//Si  numero es positivo es valido
+				if (num >= 0) {
+					listo = true;
+				} 
+				//El caso de un numero negativo
+				else {
+					System.out.println("No aceptamos numeros negativos");
+				}
+				
+			}
+			//Error de formato de numero
+			catch (NumberFormatException e) {
+				System.out.println("Formato de entrada invalido");
+			}
+			
 		}
-
+		
+		return num;
+		
+	}
 }
