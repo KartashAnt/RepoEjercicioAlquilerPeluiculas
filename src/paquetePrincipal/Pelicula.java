@@ -23,6 +23,11 @@ public class Pelicula extends Producto{
 			return true;
 		}
 	}
+	public void pasarDia() {
+		if(this.estaAlquilada()) {
+			this.diasAlquiler--;
+		}
+	}
 	@Override
 	public String toString() {
 		if(!this.estaAlquilada()) {

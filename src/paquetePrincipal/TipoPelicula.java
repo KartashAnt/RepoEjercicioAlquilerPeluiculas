@@ -28,10 +28,20 @@ public enum TipoPelicula {
 
 	public static TipoPelicula nuevoTipo(Scanner sc) {
 		while(true) {
-			System.out.println("Introduzca el tipo de la pelicula(novedad,seminovedad o antiguo):");
-			String valor=sc.nextLine();
+			System.out.println("Introduzca el tipo de la pelicula(1 para novedad, 2 para seminovedad o 3 para antiguo):");
+			int valor=0;
+			while(true) {
+				try {
+					valor = Integer.parseInt(sc.nextLine());
+					break;
+				}
+				//Error de formato de numero
+				catch (NumberFormatException e) {
+					System.out.println("Formato de entrada invalido");
+				}
+			}
 			for (TipoPelicula tipo : TipoPelicula.values()) {
-				if(tipo.name().equalsIgnoreCase(valor)) {
+				if(tipo.ordinal()==valor-1) {
 					System.out.println("Tipo valido");
 					return tipo;
 				}

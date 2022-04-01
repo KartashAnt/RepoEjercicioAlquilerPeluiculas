@@ -3,14 +3,16 @@ package paquetePrincipal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.net.ssl.SSLContext;
+
 public class Principal {
 	static ArrayList<Pelicula> peliculas= new ArrayList<Pelicula>();
 	static ArrayList<CD> cds= new ArrayList<CD>();
 	static Scanner sc=new Scanner(System.in);
 	static double ganadoVenta=0;
 	static double ganadoAlquiler=0;
+	static int dia=1;
 	public static void main(String[] args) {
-		int dia=1;
 		while(true) {
 			System.out.println("MENU: DIA " + dia);
 			System.out.println("1.- Introducir nuevo producto.\n"
@@ -51,7 +53,7 @@ public class Principal {
 				mostrarGanancias();
 				break;
 			case 9:
-				
+				pasarDia();
 				break;
 			default:
 				System.out.println("Opción invalida");
@@ -190,6 +192,19 @@ public class Principal {
 		System.out.println("Ganado por la venta de los discos: " + ganadoVenta + " \u20AC");
 		System.out.println("Ganado total: " + Math.round((ganadoAlquiler+ganadoVenta)*100.0)/100.0 + " \u20AC");
 	}
+	public static void pasarDia() {
+		System.out.println("Se desea pasar el dia(s/n)?");
+		if(aseguro()) {
+			dia++;
+			System.out.println("Pasamos al dia " + dia);
+			for (Pelicula pelicula : peliculas) {
+				pelicula.pasarDia();
+			}
+		}
+		else {
+			System.out.println("El paso del dia cancelado");
+		}
+	}
 	//metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
 			
@@ -277,5 +292,23 @@ public class Principal {
 			}
 		}
 		return disponible;
+	}
+	public static boolean aseguro() {
+		char entrada=' ';
+		while(true) {
+			try {
+				entrada=sc.nextLine().toLowerCase().charAt(0);
+				if(entrada=='s' || entrada=='n') break;
+				else System.out.println("Solo se aceptan letras s/n:");
+			} catch (java.lang.StringIndexOutOfBoundsException e) {
+				System.out.println("No se aceptan lineas vacias:");
+			}
+		}
+		if(entrada=='s') {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }
