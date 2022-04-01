@@ -43,10 +43,12 @@ public class Principal {
 				ventaDiscos();
 				break;
 			case 7:
-				
+				if(!listarPeliculas(true)) {
+					System.out.println("No hay peliculas alquiladas");
+				}
 				break;
 			case 8:
-				
+				mostrarGanancias();
 				break;
 			case 9:
 				
@@ -171,7 +173,7 @@ public class Principal {
 		}
 		else {
 			System.out.println("Quieres vender " + cd.toString() );
-			System.out.println("introduzca uno para proceder con la venta o cualquier otra cosa para cancelarla");
+			System.out.println("Introduzca uno para proceder con la venta o cualquier otra cosa para cancelarla");
 			if(sc.nextLine().equals("1")) {
 				System.out.println("CD vendido");
 				ganadoVenta+=cd.getPrecio();
@@ -182,6 +184,11 @@ public class Principal {
 				System.out.println("Venta cancelada");
 			}
 		}
+	}
+	public static void mostrarGanancias() {
+		System.out.println("Ganado por el alquiler de las peliculas: " + ganadoAlquiler + " \u20AC");
+		System.out.println("Ganado por la venta de los discos: " + ganadoVenta + " \u20AC");
+		System.out.println("Ganado total: " + Math.round((ganadoAlquiler+ganadoVenta)*100.0)/100.0 + " \u20AC");
 	}
 	//metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
