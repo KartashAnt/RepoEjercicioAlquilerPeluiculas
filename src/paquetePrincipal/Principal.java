@@ -7,7 +7,8 @@ public class Principal {
 	static ArrayList<Pelicula> peliculas= new ArrayList<Pelicula>();
 	static ArrayList<CD> cds= new ArrayList<CD>();
 	static Scanner sc=new Scanner(System.in);
-	static double ganado=0;
+	static double ganadoVenta=0;
+	static double ganadoAlquiler=0;
 	public static void main(String[] args) {
 		int dia=1;
 		while(true) {
@@ -39,7 +40,7 @@ public class Principal {
 				alquilarPeliculas();
 				break;
 			case 6:
-				
+				ventaDiscos();
 				break;
 			case 7:
 				
@@ -98,8 +99,8 @@ public class Principal {
 				if(cd!=null) {
 					System.out.println("Estas seguro que quieres eliminar el CD:");
 					System.out.println(cd);
-					System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
-					if(enteroNoNegativo()==1) {
+					System.out.println("Introduzca uno para proceder con el borrado o cualquier otra cosa para rechazar");
+					if(sc.nextLine().equals("1")) {
 						cds.remove(cd);
 						System.out.println("CD borrado");
 						return;
@@ -113,8 +114,8 @@ public class Principal {
 				if(pelicula!=null) {
 					System.out.println("Estas seguro que quieres eliminar la pelicula:");
 					System.out.println(pelicula);
-					System.out.println("Pulsa uno para proceder con el borrado o cualquier otro numero para rechazar");
-					if(enteroNoNegativo()==1) {
+					System.out.println("Introduzca uno para proceder con el borrado o cualquier otra cosa para rechazar");
+					if(sc.nextLine().equals("1")) {
 						peliculas.remove(pelicula);
 						System.out.println("Pelicula borrada");
 						return;
@@ -152,14 +153,35 @@ public class Principal {
 				System.out.println("La pelicula ya está alquilada");
 			}
 			else {
-				ganado+=pelicula.alquilarse();
-				ganado=Math.round(ganado*100.0)/100.0;
+				ganadoAlquiler+=pelicula.alquilarse();
+				ganadoAlquiler=Math.round(ganadoAlquiler*100.0)/100.0;
 			}
 		}
 		else {
 			System.out.println("No hay peliculas disponibles");
 		}
 		
+	}
+	public static void ventaDiscos() {
+		listar(false, true);
+		System.out.println("Cual disco quiere vender?");
+		CD cd=buscarCD(enteroNoNegativo());
+		if(cd==null) {
+			System.out.println("CD no existe");
+		}
+		else {
+			System.out.println("Quieres vender " + cd.toString() );
+			System.out.println("introduzca uno para proceder con la venta o cualquier otra cosa para cancelarla");
+			if(sc.nextLine().equals("1")) {
+				System.out.println("CD vendido");
+				ganadoVenta+=cd.getPrecio();
+				ganadoVenta=Math.round(ganadoVenta*100.0)/100.0;
+				cds.remove(cd);
+			}
+			else {
+				System.out.println("Venta cancelada");
+			}
+		}
 	}
 	//metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
