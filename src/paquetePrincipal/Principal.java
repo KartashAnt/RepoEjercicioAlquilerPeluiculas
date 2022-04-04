@@ -2,12 +2,15 @@ package paquetePrincipal;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 // Clase Principal donde ejecutamos toda la programa
 public class Principal {
 	// ArrayLists para peliculas y CDs aparte
 	static ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
 	static ArrayList<CD> cds = new ArrayList<CD>();
+	//ArrayList de los clientes
+	static ArrayList<Cliente> clientes = new ArrayList<Cliente>();
 	// Scanner que uso a las medias de todo la programa
 	static Scanner sc = new Scanner(System.in);
 	// Ganados
@@ -25,14 +28,15 @@ public class Principal {
 			System.out.println("MENU: DIA " + dia);
 			System.out.println(
 					"1.- Introducir nuevo producto.\n" + 
-					"2.- Eliminar producto\n" + 
-					"3.- Ver listado de películas\n" + 
-					"4.- Ver listado de CDs\n" +
-					"5.- Alquilar película\n" + 
-					"6.- Vender disco\n" + 
-					"7.- Ver películas en alquiler\n" + 
-					"8.- Ver ganancias\n" + 
-					"9.- Pasar al día siguiente");
+					"2.- Dar de alta cliente\n" +
+					"3.- Eliminar producto\n" + 
+					"4.- Ver listado de películas\n" + 
+					"5.- Ver listado de CDs\n" +
+					"6.- Alquilar película\n" + 
+					"7.- Vender disco\n" + 
+					"8.- Ver películas en alquiler\n" + 
+					"9.- Ver ganancias\n" + 
+					"10.- Pasar al día siguiente");
 			// Eligimos una opción
 			int entrada = enteroNoNegativo();
 
@@ -42,38 +46,41 @@ public class Principal {
 			case 1:
 				introducirProducto();
 				break;
-			// Eliminar un producto
 			case 2:
+				darDeAltaCliente();
+				break;
+			// Eliminar un producto
+			case 3:
 				eliminarProducto();
 				break;
 			// Listar peliculas
-			case 3:
+			case 4:
 				listar(true, false);
 				break;
 			// Listar CDs
-			case 4:
+			case 5:
 				listar(false, true);
 				break;
 			// Alquilar una pelicula
-			case 5:
+			case 6:
 				alquilarPeliculas();
 				break;
 			// Vender un disco
-			case 6:
+			case 7:
 				ventaDiscos();
 				break;
 			// Listar peliculas alquiladas
-			case 7:
+			case 8:
 				if (!listarPeliculas(true)) {
 					System.out.println("No hay peliculas alquiladas");
 				}
 				break;
 			// Mostrar ganancias
-			case 8:
+			case 9:
 				mostrarGanancias();
 				break;
 			// Paso de un dia
-			case 9:
+			case 10:
 				pasarDia();
 				break;
 			// Opción invalida
@@ -130,7 +137,33 @@ public class Principal {
 		}
 
 	}
-
+	
+	public static void darDeAltaCliente() {
+		while(true) {
+			System.out.println("Nombre: ");
+			String nombre=sc.nextLine();
+			System.out.println("Apellidos: ");
+			String apellidos=sc.nextLine();
+			String dni;
+			do {
+				System.out.println("DNI: ");
+				dni=sc.nextLine();
+			} while (!validarDNI(dni));
+			System.out.println("Eres seguro de datos de usuario");
+			System.out.println("Nombre: " +nombre);
+			System.out.println("Apellidos: " + apellidos);
+			System.out.println("DNI:" + dni);
+			System.out.println("(S/N)");
+			if(aseguro()) {
+				System.out.println("Usuario dado de alta");
+				clientes.add(new Cliente(nombre, apellidos, dni));
+				return;
+			}
+			else {
+				System.out.println("Vuelva a introducir datos");
+			}
+		}
+	} 
 	// Eliminar un producto
 	public static void eliminarProducto() {
 		// Si hay al menos alqun producto posible para eliminar
@@ -448,5 +481,25 @@ public class Principal {
 		} else {
 			return false;
 		}
+	}
+	
+	public static boolean validarDNI(String dni) {
+		
+		if (Pattern.matches("\\d{8}[A-Z]", dni)) {
+			
+			for (int i = 0; i < clientes.size(); i++) {
+				
+				if (clientes.get(i).getDni().equals(dni)) {
+					System.out.println("ERROR: DNI coincide con DNI de otro cliente");
+					return false;
+				}
+			
+			}
+			System.out.println("DNI valido");
+			return true;
+		}
+		
+		System.out.println("ERROR: DNI no valido");
+		return false;
 	}
 }
