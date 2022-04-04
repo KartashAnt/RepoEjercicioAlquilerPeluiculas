@@ -3,311 +3,449 @@ package paquetePrincipal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.net.ssl.SSLContext;
-
+// Clase Principal donde ejecutamos toda la programa
 public class Principal {
-	static ArrayList<Pelicula> peliculas= new ArrayList<Pelicula>();
-	static ArrayList<CD> cds= new ArrayList<CD>();
-	static Scanner sc=new Scanner(System.in);
-	static double ganadoVenta=0;
-	static double ganadoAlquiler=0;
-	static int dia=1;
+	// ArrayLists para peliculas y CDs aparte
+	static ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
+	static ArrayList<CD> cds = new ArrayList<CD>();
+	// Scanner que uso a las medias de todo la programa
+	static Scanner sc = new Scanner(System.in);
+	// Ganados
+	static double ganadoVenta = 0;
+	static double ganadoAlquiler = 0;
+	// Dia
+	static int dia = 1;
+
+	// main donde ejecutamos el menu principal
 	public static void main(String[] args) {
-		while(true) {
+
+		// Ejecución infinita
+		while (true) {
+			// Pinto el menu
 			System.out.println("MENU: DIA " + dia);
-			System.out.println("1.- Introducir nuevo producto.\n"
-							+ "2.- Eliminar producto\n"
-							+ "3.- Ver listado de películas\n"
-							+ "4.- Ver listado de CDs\n"
-							+ "5.- Alquilar película\n"
-							+ "6.- Vender disco\n"
-							+ "7.- Ver películas en alquiler\n"
-							+ "8.- Ver ganancias\n"
-							+ "9.- Pasar al día siguiente");
-			int entrada=enteroNoNegativo();
+			System.out.println(
+					"1.- Introducir nuevo producto.\n" + 
+					"2.- Eliminar producto\n" + 
+					"3.- Ver listado de películas\n" + 
+					"4.- Ver listado de CDs\n" +
+					"5.- Alquilar película\n" + 
+					"6.- Vender disco\n" + 
+					"7.- Ver películas en alquiler\n" + 
+					"8.- Ver ganancias\n" + 
+					"9.- Pasar al día siguiente");
+			// Eligimos una opción
+			int entrada = enteroNoNegativo();
+
+			// Opciones de menu
 			switch (entrada) {
+			// Introducir un producto nuevo
 			case 1:
 				introducirProducto();
 				break;
+			// Eliminar un producto
 			case 2:
 				eliminarProducto();
 				break;
+			// Listar peliculas
 			case 3:
 				listar(true, false);
 				break;
+			// Listar CDs
 			case 4:
 				listar(false, true);
 				break;
+			// Alquilar una pelicula
 			case 5:
 				alquilarPeliculas();
 				break;
+			// Vender un disco
 			case 6:
 				ventaDiscos();
 				break;
+			// Listar peliculas alquiladas
 			case 7:
-				if(!listarPeliculas(true)) {
+				if (!listarPeliculas(true)) {
 					System.out.println("No hay peliculas alquiladas");
 				}
 				break;
+			// Mostrar ganancias
 			case 8:
 				mostrarGanancias();
 				break;
+			// Paso de un dia
 			case 9:
 				pasarDia();
 				break;
+			// Opción invalida
 			default:
 				System.out.println("Opción invalida");
 				break;
 			}
+
 		}
+
 	}
-	
+
+	// Introducir un producto nuevo
 	public static void introducirProducto() {
+		// Preguntamos tipo de producto
 		System.out.println("Introduca tipo de producto(1 para pelicula y 2 para CD):");
 		String titulo;
-		int prod=enteroNoNegativo();
+		int prod = enteroNoNegativo();
+
 		switch (prod) {
+		// Pelicula
 		case 1:
-			TipoPelicula tipo=TipoPelicula.nuevoTipo(sc);
+			// Preguntamos tipo y titulo de la pelicula
+			TipoPelicula tipo = TipoPelicula.nuevoTipo(sc);
 			System.out.println("Titulo:");
-			titulo=sc.nextLine();
+			titulo = sc.nextLine();
+			// Preguntamos numero de las peliculas a introducir
 			System.out.println("Cuantas?");
-			for (int cantidad = enteroNoNegativo(); cantidad >0; cantidad--) {
+			// Introducimos la cantidad n de las peliculas
+			for (int cantidad = enteroNoNegativo(); cantidad > 0; cantidad--) {
 				peliculas.add(new Pelicula(tipo, titulo));
 			}
 			break;
+		// CD
 		case 2:
+			// Preguntamos autor,titulo y precio de un CD
 			System.out.println("Autor:");
-			String autor=sc.nextLine();
+			String autor = sc.nextLine();
 			System.out.println("Titulo:");
-			titulo=sc.nextLine();
+			titulo = sc.nextLine();
 			System.out.println("Precio:");
-			double precio=decimalNoNegativo();
+			double precio = decimalNoNegativo();
+			// Preguntamos numero de los CDs a introducir
 			System.out.println("Cuantos?");
-			for (int cantidad = enteroNoNegativo(); cantidad >0; cantidad--) {
+			// Introducimos la cantidad n de los CDs
+			for (int cantidad = enteroNoNegativo(); cantidad > 0; cantidad--) {
 				cds.add(new CD(autor, titulo, precio));
 			}
 			break;
+		// Opción invalida
 		default:
 			System.out.println("Opción invalida");
 			break;
 		}
+
 	}
+
+	// Eliminar un producto
 	public static void eliminarProducto() {
-		if(peliculas.size()!=0 || cds.size()!=0) {
+		// Si hay al menos alqun producto posible para eliminar
+		if (peliculas.size() != 0 || cds.size() != 0) {
+			// Listo todos los productos
 			listar(true, true);
+			// Preguntamos el numero de la pelicula al eliminar
 			System.out.println("Cual producto se quiere eliminar: ");
-			int eliminado=enteroNoNegativo();
-			if(eliminado>=20000) {
-				CD cd=buscarCD(eliminado);
-				if(cd!=null) {
+			int eliminado = enteroNoNegativo();
+			// Si tratamos de un numero a partir de 20000 - hablamos de un CD, así que
+			// buscamos un disco
+			if (eliminado >= 20000) {
+				// Buscamos el cd necesario
+				CD cd = buscarCD(eliminado);
+				// Si existe
+				if (cd != null) {
+					// Aseguramos de que el usuario quire eliminar ese CD
 					System.out.println("Estas seguro que quieres eliminar el CD:");
 					System.out.println(cd);
-					System.out.println("Introduzca uno para proceder con el borrado o cualquier otra cosa para rechazar");
-					if(sc.nextLine().equals("1")) {
+					System.out.println("(S/N)");
+					// Si decidimos borrar CD
+					if (aseguro()) {
 						cds.remove(cd);
 						System.out.println("CD borrado");
-						return;
 					}
-					System.out.println("Borrado cancelado");
-					return;
+					// Si decidimos de dejarlo en la sistema
+					else {
+						System.out.println("Borrado cancelado");
+					}
+
 				}
+				// Si CD no existe
+				else
+					System.out.println("Error: CD no existe");
 			}
-			else if(eliminado>=10000) {
-				Pelicula pelicula=buscarPeli(eliminado);
-				if(pelicula!=null) {
+			// Si hablamos de un numero menor de 20000 a partir de 10000 - tratamos de una
+			// pelicula
+			else if (eliminado >= 10000) {
+				// Buscamos esa pelicula
+				Pelicula pelicula = buscarPeli(eliminado);
+				// Si pelicula existe
+				if (pelicula != null) {
 					System.out.println("Estas seguro que quieres eliminar la pelicula:");
 					System.out.println(pelicula);
-					System.out.println("Introduzca uno para proceder con el borrado o cualquier otra cosa para rechazar");
-					if(sc.nextLine().equals("1")) {
+					System.out.println("(S/N)");
+					// Si decidimos borrar peli
+					if (aseguro()) {
 						peliculas.remove(pelicula);
 						System.out.println("Pelicula borrada");
-						return;
 					}
-					System.out.println("Borrado cancelado");
-					return;
+					// Si decidimos de dejarlo en la sistema
+					else {
+						System.out.println("Borrado cancelado");
+					}
+
 				}
+				// Si la pelicula no existe
+				else
+					System.out.println("Error: Pelicula no existe");
+
 			}
-			System.out.println("El produto pedido no existe");
+			// Si el numera esta fuera de los rangos de los codigos adecuados, es decir
+			// menor de 10000
+			else {
+				System.out.println("Error: Producto pedido no existe");
+			}
+
 		}
+		// Si no hay productos vinculados en la sistema
 		else {
 			System.out.println("No hay productos para eliminar");
 		}
+
 	}
+
+	// Metodo para listar película o cds
 	public static void listar(boolean listarPeliculas, boolean listarCDs) {
-		if(listarPeliculas) {
+		// Si queremos listar peliculas
+		if (listarPeliculas) {
+			// Listamos peliculas
 			for (Pelicula pelicula : peliculas) {
 				System.out.println(pelicula);
 			}
+			// Si no hay peliculas vinculadas en la programa
+			if (peliculas.size() == 0)
+				System.out.println("No hay peliculas en la programa");
 		}
-		if(listarCDs) {
+		// Si queremos listar CDs
+		if (listarCDs) {
+			// Listamos CDs
 			for (CD cd : cds) {
 				System.out.println(cd);
 			}
+			// Si no hay CDs vinculados en la programa
+			if (cds.size() == 0)
+				System.out.println("No hay discos en la programa");
 		}
 	}
+
+	// Alquilamos una película
 	public static void alquilarPeliculas() {
+		// Si hay pelicula no alquiladas en la programa
 		if (listarPeliculas(false)) {
+			// Preguntamos la pelicula
 			System.out.println("Cual pelicula se quiere alquilar:");
-			Pelicula pelicula=buscarPeli(enteroNoNegativo());
-			if(pelicula==null) {
+			Pelicula pelicula = buscarPeli(enteroNoNegativo());
+			// Si la pelicula con ese codigo no existe
+			if (pelicula == null) {
 				System.out.println("La pelicula no existe");
 			}
-			else if(pelicula.estaAlquilada()) {
+			// Si la película pedida existe pero ya está alquilada
+			else if (pelicula.estaAlquilada()) {
 				System.out.println("La pelicula ya está alquilada");
 			}
+			// Si la película existe y además no está alquilada
 			else {
-				ganadoAlquiler+=pelicula.alquilarse();
-				ganadoAlquiler=Math.round(ganadoAlquiler*100.0)/100.0;
+				// Aseguramos de alquiler
+				System.out.println("Quieres alquilar " + pelicula.toString());
+				System.out.println("(S/N)");
+				if (aseguro()) {
+					// Alquilamos la pelicula
+					System.out.println("Película alquilada");
+					// Acumulamos ganancias
+					ganadoAlquiler += pelicula.alquilarse();
+					ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
+				}
+				// Cancelamos alquiler
+				else
+					System.out.println("Alquiler cancelado");
 			}
+
 		}
+		// Si no hay peliculas alquiladas en la sistema
 		else {
 			System.out.println("No hay peliculas disponibles");
 		}
-		
+
 	}
+
+	// Metodo para vender un disco
 	public static void ventaDiscos() {
-		listar(false, true);
-		System.out.println("Cual disco quiere vender?");
-		CD cd=buscarCD(enteroNoNegativo());
-		if(cd==null) {
-			System.out.println("CD no existe");
-		}
-		else {
-			System.out.println("Quieres vender " + cd.toString() );
-			System.out.println("Introduzca uno para proceder con la venta o cualquier otra cosa para cancelarla");
-			if(sc.nextLine().equals("1")) {
-				System.out.println("CD vendido");
-				ganadoVenta+=cd.getPrecio();
-				ganadoVenta=Math.round(ganadoVenta*100.0)/100.0;
-				cds.remove(cd);
+		// Si hay CDs en nuestra programa
+		if (cds.size() != 0) {
+			// Listamos CDs
+			listar(false, true);
+			// Preguntamos el disco que se quiera vender
+			System.out.println("Cual disco quiere vender?");
+			CD cd = buscarCD(enteroNoNegativo());
+			// Si no existe
+			if (cd == null) {
+				System.out.println("CD no existe");
 			}
+			// Si existe
 			else {
-				System.out.println("Venta cancelada");
+				// Aseguramos de intención de venta
+				System.out.println("Quieres vender " + cd.toString());
+				System.out.println("(S/N)");
+				if (aseguro()) {
+					System.out.println("CD vendido");
+					// Acumulamos ganancias
+					ganadoVenta += cd.getPrecio();
+					ganadoVenta = Math.round(ganadoVenta * 100.0) / 100.0;
+					// Borramos disco
+					cds.remove(cd);
+				} else {
+					// Cancelamos la venta
+					System.out.println("Venta cancelada");
+				}
 			}
 		}
+		// Si no hay CDs disponibles
+		else
+			System.out.println("No hay CDs disponibles para venta");
+
 	}
+
+	// Muestra de las ganancias
 	public static void mostrarGanancias() {
+		// Ganado de alquiler
 		System.out.println("Ganado por el alquiler de las peliculas: " + ganadoAlquiler + " \u20AC");
+		// Ganado de venta
 		System.out.println("Ganado por la venta de los discos: " + ganadoVenta + " \u20AC");
-		System.out.println("Ganado total: " + Math.round((ganadoAlquiler+ganadoVenta)*100.0)/100.0 + " \u20AC");
+		// Ganado total
+		System.out.println("Ganado total: " + Math.round((ganadoAlquiler + ganadoVenta) * 100.0) / 100.0 + " \u20AC");
 	}
+
+	// Pasamos el dia
 	public static void pasarDia() {
+		// Aseguramos que una persona quiera pasar el dia
 		System.out.println("Se desea pasar el dia(s/n)?");
-		if(aseguro()) {
+		if (aseguro()) {
+			// Pasamos el dia de identificador y en los alquileres de las poeliculas
 			dia++;
 			System.out.println("Pasamos al dia " + dia);
 			for (Pelicula pelicula : peliculas) {
 				pelicula.pasarDia();
 			}
-		}
-		else {
+		} else {
 			System.out.println("El paso del dia cancelado");
 		}
 	}
-	//metodo para que me introducen un int no negativo
+
+	// metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
-			
-			int num = 0;
-			boolean listo = false;
-			//Hasta el momento que no introducen un int valido
-			while (!listo) {
-				//hago try catch para estar seguro de que me introducen un int
-				try {
-					
-					num = Integer.parseInt(sc.nextLine());
-					//Si  numero es positivo es valido
-					if (num >= 0) {
-						listo = true;
-					}
-					//El caso de un numero negativo
-					else {
-						System.out.println("No aceptamos numeros negativos");
-					}
-					
-				}
-				//Error de formato de numero
-				catch (NumberFormatException e) {
-					System.out.println("Formato de entrada invalido");
-				}
-				
-			}
-			
-			return num;
-			
-	}
-	//metodo para que me introducen un double no negativo
-	public static double decimalNoNegativo() {
-		
-		double num = 0;
+
+		int num = 0;
 		boolean listo = false;
-		//Hasta el momento que no introducen un double valido
+		// Hasta el momento que no introducen un int valido
 		while (!listo) {
-			//hago try catch para estar seguro de que me introducen un double
+			// hago try catch para estar seguro de que me introducen un int
 			try {
-				
-				num = Double.parseDouble(sc.nextLine());
-				//Si  numero es positivo es valido
+
+				num = Integer.parseInt(sc.nextLine());
+				// Si numero es positivo es valido
 				if (num >= 0) {
 					listo = true;
-				} 
-				//El caso de un numero negativo
+				}
+				// El caso de un numero negativo
 				else {
 					System.out.println("No aceptamos numeros negativos");
 				}
-				
+
 			}
-			//Error de formato de numero
+			// Error de formato de numero
 			catch (NumberFormatException e) {
 				System.out.println("Formato de entrada invalido");
 			}
-			
+
 		}
-		
+
 		return num;
-		
+
 	}
+
+	// metodo para que me introducen un double no negativo
+	public static double decimalNoNegativo() {
+
+		double num = 0;
+		boolean listo = false;
+		// Hasta el momento que no introducen un double valido
+		while (!listo) {
+			// hago try catch para estar seguro de que me introducen un double
+			try {
+
+				num = Double.parseDouble(sc.nextLine());
+				// Si numero es positivo es valido
+				if (num >= 0) {
+					listo = true;
+				}
+				// El caso de un numero negativo
+				else {
+					System.out.println("No aceptamos numeros negativos");
+				}
+
+			}
+			// Error de formato de numero
+			catch (NumberFormatException e) {
+				System.out.println("Formato de entrada invalido");
+			}
+
+		}
+
+		return num;
+
+	}
+
+	// Buscamos un CD por su codigo
 	public static CD buscarCD(int codigo) {
 		for (CD cd : cds) {
-			if(cd.getCodigo()==codigo) {
+			if (cd.getCodigo() == codigo) {
 				return cd;
 			}
 		}
 		return null;
 	}
+
+	// Buscamos un Peli por su codigo
 	public static Pelicula buscarPeli(int codigo) {
 		for (Pelicula pelicula : peliculas) {
-			if(pelicula.getCodigo()==codigo) {
+			if (pelicula.getCodigo() == codigo) {
 				return pelicula;
 			}
 		}
 		return null;
 	}
+
+	// Listamos las pelicula en función de su alquiler
 	public static boolean listarPeliculas(boolean alquiladas) {
-		boolean disponible=false;
+		boolean disponible = false;
 		for (Pelicula pelicula : peliculas) {
-			if(pelicula.estaAlquilada()==alquiladas) {
+			if (pelicula.estaAlquilada() == alquiladas) {
 				System.out.println(pelicula);
-				disponible=true;
+				disponible = true;
 			}
 		}
 		return disponible;
 	}
+
+	// Metodo para asegurar una desición con s/n
 	public static boolean aseguro() {
-		char entrada=' ';
-		while(true) {
+		char entrada = ' ';
+		while (true) {
 			try {
-				entrada=sc.nextLine().toLowerCase().charAt(0);
-				if(entrada=='s' || entrada=='n') break;
-				else System.out.println("Solo se aceptan letras s/n:");
+				entrada = sc.nextLine().toLowerCase().charAt(0);
+				if (entrada == 's' || entrada == 'n')
+					break;
+				else
+					System.out.println("Solo se aceptan letras s/n:");
 			} catch (java.lang.StringIndexOutOfBoundsException e) {
 				System.out.println("No se aceptan lineas vacias:");
 			}
 		}
-		if(entrada=='s') {
+		if (entrada == 's') {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

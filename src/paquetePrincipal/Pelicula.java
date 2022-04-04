@@ -50,7 +50,9 @@ public class Pelicula extends Producto {
 		if (this.estaAlquilada()) {
 
 			this.diasAlquiler--;
-
+			
+			//Indico si la pelicula ha sido devuelta
+			if(!this.estaAlquilada()) System.out.println("La pelicula " + super.getTitulo() +" con codigo "+ super.getCodigo() + " ha sido devuelta");
 		}
 
 	}
