@@ -23,7 +23,7 @@ public enum TipoPelicula {
 
 	// Un trozo de codigo para poder elegir un tipo exacto
 	public static TipoPelicula nuevoTipo(Scanner sc) {
-		// Ese metodo sí o sí tiene que devolver alguno de los tipos disponibles
+		// Ese metodo si o si tiene que devolver alguno de los tipos disponibles
 		while (true) {
 			// Pido introduzirme el tipo de pelicula en forma numerica
 			System.out
@@ -65,7 +65,7 @@ public enum TipoPelicula {
 
 	}
 
-	// Getters y Setters básicos
+	// Getters y Setters basicos
 	public int getDias() {
 		return dias;
 	}

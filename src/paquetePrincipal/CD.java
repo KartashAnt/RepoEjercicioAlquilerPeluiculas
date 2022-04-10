@@ -26,7 +26,7 @@ public class CD extends Producto {
 		return super.toString() + " - CD - de " + this.autor + " - precio: " + this.precio + " \u20AC";
 	}
 
-	// Getters y Setters básicos
+	// Getters y Setters basicos
 	public String getAutor() {
 		return autor;
 	}

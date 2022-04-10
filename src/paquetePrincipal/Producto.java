@@ -16,7 +16,7 @@ public class Producto {
 
 	}
 
-	// El metodo para asignar el codigo en fución de hijo
+	// El metodo para asignar el codigo en fucion de hijo
 	public void asignarCodigo() {
 		// Si es una pelicula
 		if (this instanceof Pelicula) {
@@ -42,7 +42,7 @@ public class Producto {
 
 	}
 
-	// Getters y Setters básicos
+	// Getters y Setters basicos
 	public int getCodigo() {
 		return codigo;
 	}

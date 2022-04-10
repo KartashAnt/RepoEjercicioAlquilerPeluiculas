@@ -26,18 +26,18 @@ public class Pelicula extends Producto {
 		this.diasAlquiler = tipo.getDias();
 		// Pinto el mensaje de alquiler
 		System.out.println("La película " + super.getTitulo() + " era alquilada por " + this.diasAlquiler + " dias");
-		// devuelvo el precio que obtengo en función del tipo
+		// devuelvo el precio que obtengo en funcion del tipo
 		return this.tipo.getPrecio();
 
 	}
 
-	// Combrueba si la pelicula está en alquiler
+	// Combrueba si la pelicula esta en alquiler
 	public boolean estaAlquilada() {
 		// Si no tiene los dias para quedar en alquiler no esta alquilad
 		if (this.diasAlquiler <= 0) {
 			return false;
 		}
-		// Si tiene los dias que tiene que seguir alquilada, pues está alquilada
+		// Si tiene los dias que tiene que seguir alquilada, pues esta alquilada
 		else {
 			return true;
 		}
@@ -57,10 +57,10 @@ public class Pelicula extends Producto {
 
 	}
 
-	// toString básico
+	// toString basico
 	@Override
 	public String toString() {
-		// Si la pelicula no está alquilada pinto solo su codigo, nombre y tipo
+		// Si la pelicula no esta alquilada pinto solo su codigo, nombre y tipo
 		if (!this.estaAlquilada()) {
 			return super.toString() + " - PELICULA - " + tipo.name();
 		}
@@ -73,7 +73,7 @@ public class Pelicula extends Producto {
 
 	}
 
-	// Getters y Setters básicos
+	// Getters y Setters basicos
 	public TipoPelicula getTipo() {
 		return tipo;
 	}

@@ -19,10 +19,10 @@ public class Principal {
 	// Dia
 	static int dia = 1;
 
-	// main donde ejecutamos el menu principal
+	// Main donde ejecutamos el menu principal
 	public static void main(String[] args) {
 
-		// Ejecución infinita
+		// Ejecucion infinita
 		while (true) {
 			// Pinto el menu
 			System.out.println("MENU: DIA " + dia);
@@ -37,7 +37,7 @@ public class Principal {
 					"8.- Ver películas en alquiler\n" + 
 					"9.- Ver ganancias\n" + 
 					"10.- Pasar al día siguiente");
-			// Eligimos una opción
+			// Eligimos una opcion
 			int entrada = enteroNoNegativo();
 
 			// Opciones de menu
@@ -83,7 +83,7 @@ public class Principal {
 			case 10:
 				pasarDia();
 				break;
-			// Opción invalida
+			// Opcion invalida
 			default:
 				System.out.println("Opción invalida");
 				break;
@@ -130,7 +130,7 @@ public class Principal {
 				cds.add(new CD(autor, titulo, precio));
 			}
 			break;
-		// Opción invalida
+		// Opcion invalida
 		default:
 			System.out.println("Opción invalida");
 			break;
@@ -173,7 +173,7 @@ public class Principal {
 			// Preguntamos el numero de la pelicula al eliminar
 			System.out.println("Cual producto se quiere eliminar: ");
 			int eliminado = enteroNoNegativo();
-			// Si tratamos de un numero a partir de 20000 - hablamos de un CD, así que
+			// Si tratamos de un numero a partir de 20000 - hablamos de un CD, asi que
 			// buscamos un disco
 			if (eliminado >= 20000) {
 				// Buscamos el cd necesario
@@ -239,7 +239,7 @@ public class Principal {
 
 	}
 
-	// Metodo para listar película o cds
+	// Metodo para listar pelicula o cds
 	public static void listar(boolean listarPeliculas, boolean listarCDs) {
 		// Si queremos listar peliculas
 		if (listarPeliculas) {
@@ -263,7 +263,7 @@ public class Principal {
 		}
 	}
 
-	// Alquilamos una película
+	// Alquilamos una pelicula
 	public static void alquilarPeliculas() {
 		// Si hay pelicula no alquiladas en la programa
 		if (listarPeliculas(false)) {
@@ -274,11 +274,11 @@ public class Principal {
 			if (pelicula == null) {
 				System.out.println("La pelicula no existe");
 			}
-			// Si la película pedida existe pero ya está alquilada
+			// Si la pelicula pedida existe pero ya está alquilada
 			else if (pelicula.estaAlquilada()) {
 				System.out.println("La pelicula ya está alquilada");
 			}
-			// Si la película existe y además no está alquilada
+			// Si la pelicula existe y además no esta alquilada
 			else {
 				// Aseguramos de alquiler
 				System.out.println("Quieres alquilar " + pelicula.toString());
@@ -318,7 +318,7 @@ public class Principal {
 			}
 			// Si existe
 			else {
-				// Aseguramos de intención de venta
+				// Aseguramos de intencion de venta
 				System.out.println("Quieres vender " + cd.toString());
 				System.out.println("(S/N)");
 				if (aseguro()) {
@@ -366,14 +366,14 @@ public class Principal {
 		}
 	}
 
-	// metodo para que me introducen un int no negativo
+	// Metodo para que me introducen un int no negativo
 	public static int enteroNoNegativo() {
 
 		int num = 0;
 		boolean listo = false;
 		// Hasta el momento que no introducen un int valido
 		while (!listo) {
-			// hago try catch para estar seguro de que me introducen un int
+			// Hago try catch para estar seguro de que me introducen un int
 			try {
 
 				num = Integer.parseInt(sc.nextLine());
@@ -398,14 +398,14 @@ public class Principal {
 
 	}
 
-	// metodo para que me introducen un double no negativo
+	// Metodo para que me introducen un double no negativo
 	public static double decimalNoNegativo() {
 
 		double num = 0;
 		boolean listo = false;
 		// Hasta el momento que no introducen un double valido
 		while (!listo) {
-			// hago try catch para estar seguro de que me introducen un double
+			// Hago try catch para estar seguro de que me introducen un double
 			try {
 
 				num = Double.parseDouble(sc.nextLine());
@@ -450,7 +450,7 @@ public class Principal {
 		return null;
 	}
 
-	// Listamos las pelicula en función de su alquiler
+	// Listamos las pelicula en funcion de su alquiler
 	public static boolean listarPeliculas(boolean alquiladas) {
 		boolean disponible = false;
 		for (Pelicula pelicula : peliculas) {
@@ -462,7 +462,7 @@ public class Principal {
 		return disponible;
 	}
 
-	// Metodo para asegurar una desición con s/n
+	// Metodo para asegurar una desicion con s/n
 	public static boolean aseguro() {
 		char entrada = ' ';
 		while (true) {
@@ -483,10 +483,11 @@ public class Principal {
 		}
 	}
 	
+	//Metodo para validar introducoion del DNI
 	public static boolean validarDNI(String dni) {
-		
+		//Patron de DNI
 		if (Pattern.matches("\\d{8}[A-Z]", dni)) {
-			
+			//Busqueda del DNI repetido
 			for (int i = 0; i < clientes.size(); i++) {
 				
 				if (clientes.get(i).getDni().equals(dni)) {
