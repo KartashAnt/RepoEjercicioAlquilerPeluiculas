@@ -5,20 +5,20 @@ import java.util.Scanner;
 // Enum para guardar valores posibles de tipo de una pelicula
 public enum TipoPelicula {
 	// Las peliculas pueden ser de esos tipos
-	NOVEDAD(1, 3), SEMINOVEDAD(2, 2), ANTIGUO(4, 1);
+	NOVEDAD(1, 3, 2), SEMINOVEDAD(2, 2, 1), ANTIGUO(4, 1, 0.5);
 
 	// Cada tipo tiene asignado dias que sigue alquilado y el precio de ese tipo de
 	// alquiler
 	private int dias;
 	private double precio;
+	private double precioPorDiaDeRetraso;
 
 	// Constructor de tipo para darle numero de dias y precio de alquiler de ese
-	// tipo de las peliculas
-	private TipoPelicula(int dias, double precio) {
-
+	// tipo de las peliculas y su precio de la multa por un dia de retraso
+	private TipoPelicula(int dias, double precio, double precioPorDiaDeRetraso) {
 		this.dias = dias;
 		this.precio = precio;
-
+		this.precioPorDiaDeRetraso = precioPorDiaDeRetraso;
 	}
 
 	// Un trozo de codigo para poder elegir un tipo exacto
@@ -81,4 +81,13 @@ public enum TipoPelicula {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
+
+	public double getPrecioPorDiaDeRetraso() {
+		return precioPorDiaDeRetraso;
+	}
+
+	public void setPrecioPorDiaDeRetraso(double precioPorDiaDeRetraso) {
+		this.precioPorDiaDeRetraso = precioPorDiaDeRetraso;
+	}
+	
 }

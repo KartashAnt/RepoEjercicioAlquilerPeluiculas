@@ -30,13 +30,13 @@ public class Principal {
 					"1.- Introducir nuevo producto.\n" + 
 					"2.- Dar de alta cliente\n" +
 					"3.- Eliminar producto\n" + 
-					"4.- Ver listado de películas\n" + 
+					"4.- Ver listado de peliculas\n" + 
 					"5.- Ver listado de CDs\n" +
-					"6.- Alquilar película\n" + 
+					"6.- Alquilar pelicula\n" + 
 					"7.- Vender disco\n" + 
-					"8.- Ver películas en alquiler\n" + 
+					"8.- Ver peliculas en alquiler\n" + 
 					"9.- Ver ganancias\n" + 
-					"10.- Pasar al día siguiente");
+					"10.- Pasar al dia siguiente");
 			// Eligimos una opcion
 			int entrada = enteroNoNegativo();
 
@@ -55,11 +55,11 @@ public class Principal {
 				break;
 			// Listar peliculas
 			case 4:
-				listar(true, false);
+				listarProductos(true, false);
 				break;
 			// Listar CDs
 			case 5:
-				listar(false, true);
+				listarProductos(false, true);
 				break;
 			// Alquilar una pelicula
 			case 6:
@@ -138,17 +138,23 @@ public class Principal {
 
 	}
 	
+	//Metodo para dar de alta a un cliente
 	public static void darDeAltaCliente() {
+		
 		while(true) {
+			
 			System.out.println("Nombre: ");
 			String nombre=sc.nextLine();
+			
 			System.out.println("Apellidos: ");
 			String apellidos=sc.nextLine();
+			
 			String dni;
 			do {
 				System.out.println("DNI: ");
 				dni=sc.nextLine();
 			} while (!validarDNI(dni));
+			
 			System.out.println("Eres seguro de datos de usuario");
 			System.out.println("Nombre: " +nombre);
 			System.out.println("Apellidos: " + apellidos);
@@ -162,14 +168,16 @@ public class Principal {
 			else {
 				System.out.println("Vuelva a introducir datos");
 			}
+			
 		}
+		
 	} 
 	// Eliminar un producto
 	public static void eliminarProducto() {
 		// Si hay al menos alqun producto posible para eliminar
 		if (peliculas.size() != 0 || cds.size() != 0) {
 			// Listo todos los productos
-			listar(true, true);
+			listarProductos(true, true);
 			// Preguntamos el numero de la pelicula al eliminar
 			System.out.println("Cual producto se quiere eliminar: ");
 			int eliminado = enteroNoNegativo();
@@ -211,6 +219,10 @@ public class Principal {
 					System.out.println("(S/N)");
 					// Si decidimos borrar peli
 					if (aseguro()) {
+						// Si la pelicula que borramos permanesca en el alquiler
+						if(pelicula.estaAlquilada()) {
+							pelicula.getAlquilador().borrarPeli(pelicula);
+						}
 						peliculas.remove(pelicula);
 						System.out.println("Pelicula borrada");
 					}
@@ -240,7 +252,7 @@ public class Principal {
 	}
 
 	// Metodo para listar pelicula o cds
-	public static void listar(boolean listarPeliculas, boolean listarCDs) {
+	public static void listarProductos(boolean listarPeliculas, boolean listarCDs) {
 		// Si queremos listar peliculas
 		if (listarPeliculas) {
 			// Listamos peliculas
@@ -265,6 +277,25 @@ public class Principal {
 
 	// Alquilamos una pelicula
 	public static void alquilarPeliculas() {
+		//Si hay clientes disponibles
+		Cliente cliente;
+		if(clientes.size()!=0) {
+				listarClientes();
+				System.out.println("Seleciona el cliente:");
+				cliente=clientePorID(enteroNoNegativo());
+				//Si cliente existe
+				if(cliente!=null) {
+					
+				}
+				else {
+					
+				}
+		}
+		//No hay clinetes disponibles
+		else {
+			System.out.println("No hay clientes disponibles");
+			return;
+		}
 		// Si hay pelicula no alquiladas en la programa
 		if (listarPeliculas(false)) {
 			// Preguntamos la pelicula
@@ -287,7 +318,7 @@ public class Principal {
 					// Alquilamos la pelicula
 					System.out.println("Película alquilada");
 					// Acumulamos ganancias
-					ganadoAlquiler += pelicula.alquilarse();
+					ganadoAlquiler += pelicula.alquilarse(cliente);
 					ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
 				}
 				// Cancelamos alquiler
@@ -299,6 +330,7 @@ public class Principal {
 		// Si no hay peliculas alquiladas en la sistema
 		else {
 			System.out.println("No hay peliculas disponibles");
+			return;
 		}
 
 	}
@@ -308,7 +340,7 @@ public class Principal {
 		// Si hay CDs en nuestra programa
 		if (cds.size() != 0) {
 			// Listamos CDs
-			listar(false, true);
+			listarProductos(false, true);
 			// Preguntamos el disco que se quiera vender
 			System.out.println("Cual disco quiere vender?");
 			CD cd = buscarCD(enteroNoNegativo());
@@ -483,24 +515,38 @@ public class Principal {
 		}
 	}
 	
-	//Metodo para validar introducoion del DNI
+	// Metodo para validar introducoion del DNI
 	public static boolean validarDNI(String dni) {
-		//Patron de DNI
+		// Patron de DNI
 		if (Pattern.matches("\\d{8}[A-Z]", dni)) {
-			//Busqueda del DNI repetido
+			// Busqueda del DNI repetido
 			for (int i = 0; i < clientes.size(); i++) {
-				
+
 				if (clientes.get(i).getDni().equals(dni)) {
 					System.out.println("ERROR: DNI coincide con DNI de otro cliente");
 					return false;
 				}
-			
+
 			}
 			System.out.println("DNI valido");
 			return true;
 		}
-		
+
 		System.out.println("ERROR: DNI no valido");
 		return false;
+	}
+	
+	// Metodo para listar clientes
+	public static void listarClientes() {
+		
+		for (Cliente cliente : clientes) {
+			System.out.println(cliente);
+		}
+		
+	}
+	
+	//Mecanismo de busqueda de un cliente por id
+	public static Cliente clientePorID(int id) {
+		return clientes.stream().filter(cliente -> id==cliente.getCodigo()).findFirst().orElse(null);
 	}
 }

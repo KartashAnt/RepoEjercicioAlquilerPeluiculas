@@ -10,6 +10,7 @@ public class Pelicula extends Producto {
 	private TipoPelicula tipo;
 	private int diasAlquiler = 0;
 
+	private Cliente alquilador;
 	// Constructor a partir de tipo y titulo, el codigo se autoasigna en el
 	// constructor de metodo padre
 	public Pelicula(TipoPelicula tipo, String titulo) {
@@ -20,21 +21,39 @@ public class Pelicula extends Producto {
 	}
 
 	// El metodo para que una pelicula se alquila y devuelva el precio de su alquilo
-	public double alquilarse() {
-
-		// Dias se ponen en fución del tipo de la pelicula
+	public double alquilarse(Cliente alquilador) {
+			
+		// Dias se ponen en fucion del tipo de la pelicula
 		this.diasAlquiler = tipo.getDias();
 		// Pinto el mensaje de alquiler
-		System.out.println("La película " + super.getTitulo() + " era alquilada por " + this.diasAlquiler + " dias");
+		System.out.println("La pelicula " + super.getTitulo() + " era alquilada por " + this.diasAlquiler + " dias por " + alquilador.getNombre());
 		// devuelvo el precio que obtengo en funcion del tipo
+		this.alquilador=alquilador;
+		alquilador.alquilarPeli(this);
 		return this.tipo.getPrecio();
-
+	}
+	
+	// El metodo para devolver el precio de multa por los dias retrasados por nuestra 
+	// Tambien ese metodo maneja la devuelta de una pelicula
+	public double devolverse() {
+		this.alquilador.devolverPeli(this);
+		this.alquilador=null;
+		double precio=0;
+		if(diasAlquiler<0) {
+			System.out.println("PELICULA HA SIDO DEVUELTA CON RETRASO");
+			precio=Math.round(diasAlquiler*tipo.getPrecioPorDiaDeRetraso()*-100.0)/100.0;
+			System.out.println("El cliente ha sido multado por " +  precio + " euros");
+		}
+		else {
+			System.out.println("PELICULA HA SIDO DEVUELTA SIN RETRASO");
+		}
+		return precio;
 	}
 
 	// Combrueba si la pelicula esta en alquiler
 	public boolean estaAlquilada() {
 		// Si no tiene los dias para quedar en alquiler no esta alquilad
-		if (this.diasAlquiler <= 0) {
+		if (this.alquilador == null) {
 			return false;
 		}
 		// Si tiene los dias que tiene que seguir alquilada, pues esta alquilada
@@ -90,4 +109,12 @@ public class Pelicula extends Producto {
 		this.diasAlquiler = diasAlquiler;
 	}
 
+	public Cliente getAlquilador() {
+		return alquilador;
+	}
+
+	public void setAlquilador(Cliente alquilador) {
+		this.alquilador = alquilador;
+	}
+	
 }
