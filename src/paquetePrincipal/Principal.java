@@ -32,11 +32,12 @@ public class Principal {
 					"3.- Eliminar producto\n" + 
 					"4.- Ver listado de peliculas\n" + 
 					"5.- Ver listado de CDs\n" +
-					"6.- Alquilar pelicula\n" + 
-					"7.- Vender disco\n" + 
-					"8.- Ver peliculas en alquiler\n" + 
-					"9.- Ver ganancias\n" + 
-					"10.- Pasar al dia siguiente");
+					"6.- Alquilar pelicula\n" +
+					"7.- Devolver pelicula\n" +
+					"8.- Vender disco\n" + 
+					"9.- Ver peliculas en alquiler\n" + 
+					"10.- Ver ganancias\n" + 
+					"11.- Pasar al dia siguiente");
 			// Eligimos una opcion
 			int entrada = enteroNoNegativo();
 
@@ -65,22 +66,26 @@ public class Principal {
 			case 6:
 				alquilarPeliculas();
 				break;
-			// Vender un disco
+			//Devolver una pelicula
 			case 7:
+				devolverPeliculas();
+				break;
+			// Vender un disco
+			case 8:
 				ventaDiscos();
 				break;
 			// Listar peliculas alquiladas
-			case 8:
+			case 9:
 				if (!listarPeliculas(true)) {
 					System.out.println("No hay peliculas alquiladas");
 				}
 				break;
 			// Mostrar ganancias
-			case 9:
+			case 10:
 				mostrarGanancias();
 				break;
 			// Paso de un dia
-			case 10:
+			case 11:
 				pasarDia();
 				break;
 			// Opcion invalida
@@ -221,7 +226,7 @@ public class Principal {
 					if (aseguro()) {
 						// Si la pelicula que borramos permanesca en el alquiler
 						if(pelicula.estaAlquilada()) {
-							pelicula.getAlquilador().borrarPeli(pelicula);
+							pelicula.getAlquilador().borrarPeli(eliminado);
 						}
 						peliculas.remove(pelicula);
 						System.out.println("Pelicula borrada");
@@ -284,11 +289,9 @@ public class Principal {
 				System.out.println("Seleciona el cliente:");
 				cliente=clientePorID(enteroNoNegativo());
 				//Si cliente existe
-				if(cliente!=null) {
-					
-				}
-				else {
-					
+				if(cliente==null) {
+					System.out.println("CLIENTE NO EXISTE");
+					return;
 				}
 		}
 		//No hay clinetes disponibles
@@ -297,44 +300,82 @@ public class Principal {
 			return;
 		}
 		// Si hay pelicula no alquiladas en la programa
-		if (listarPeliculas(false)) {
-			// Preguntamos la pelicula
-			System.out.println("Cual pelicula se quiere alquilar:");
-			Pelicula pelicula = buscarPeli(enteroNoNegativo());
-			// Si la pelicula con ese codigo no existe
-			if (pelicula == null) {
-				System.out.println("La pelicula no existe");
-			}
-			// Si la pelicula pedida existe pero ya está alquilada
-			else if (pelicula.estaAlquilada()) {
-				System.out.println("La pelicula ya está alquilada");
-			}
-			// Si la pelicula existe y además no esta alquilada
-			else {
-				// Aseguramos de alquiler
-				System.out.println("Quieres alquilar " + pelicula.toString());
-				System.out.println("(S/N)");
-				if (aseguro()) {
-					// Alquilamos la pelicula
-					System.out.println("Película alquilada");
-					// Acumulamos ganancias
-					ganadoAlquiler += pelicula.alquilarse(cliente);
-					ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
+		//alquilamos multiples peliculas
+		while(true) {
+			if (listarPeliculas(false)) {
+				// Preguntamos la pelicula
+				System.out.println("Cual pelicula se quiere alquilar (0 para salir):");
+				int entrada=enteroNoNegativo();
+				if(entrada==0) {
+					System.out.println("Alquilado acabado");
+					return;
 				}
-				// Cancelamos alquiler
-				else
-					System.out.println("Alquiler cancelado");
-			}
+				else {
+					Pelicula pelicula = buscarPeli(entrada);
+				// Si la pelicula con ese codigo no existe
+				if (pelicula == null) {
+					System.out.println("La pelicula no existe");
+				}
+				// Si la pelicula pedida existe pero ya está alquilada
+				else if (pelicula.estaAlquilada()) {
+					System.out.println("La pelicula ya está alquilada");
+				}
+				// Si la pelicula existe y además no esta alquilada
+				else {
+					// Aseguramos de alquiler
+					System.out.println("Quieres alquilar " + pelicula.toString());
+					System.out.println("(S/N)");
+					if (aseguro()) {
+						// Acumulamos ganancias
+						ganadoAlquiler += pelicula.alquilarse(cliente);
+						ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
+					}
+					// Cancelamos alquiler
+					else
+						System.out.println("Alquiler cancelado");
+				}
+				}
+				
 
+			}
+			// Si no hay peliculas alquiladas en la sistema
+			else {
+				System.out.println("No hay peliculas disponibles");
+				return;
+			}
 		}
-		// Si no hay peliculas alquiladas en la sistema
-		else {
-			System.out.println("No hay peliculas disponibles");
-			return;
-		}
+		
 
 	}
-
+	
+	// Metodo para devolver peliculas
+	public static void devolverPeliculas() {
+		while(true) {
+			if(listarPeliculas(true)) {
+				System.out.println("Elige la pelicula para devolver (0 para salir): ");
+				int entrada=enteroNoNegativo();
+				if(entrada==0) {
+					System.out.println("Devuelta acabado");
+					return;
+				}
+				else {
+					Pelicula pelicula=buscarPeli(entrada);
+					if(pelicula!=null) {
+						ganadoAlquiler += pelicula.devolverse();
+						ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
+					}
+					else {
+						System.out.println("PELICULA NO EXISTE");
+					}
+				}
+			}
+			else {
+				System.out.println("NO HAY PELICULAS ALQUILADAS");
+				return;
+			}
+		}
+		
+	}
 	// Metodo para vender un disco
 	public static void ventaDiscos() {
 		// Si hay CDs en nuestra programa

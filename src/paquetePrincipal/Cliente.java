@@ -40,17 +40,10 @@ public class Cliente {
 	}
 
 	// Metodo para devolver una pelicula
-	public void devolverPeli(Pelicula peli) {
-		// Busco si la pelicula pedida pertenece al cliente
-		boolean esta = false;
-		for (Pelicula pelicula : alquilado) {
-			if (pelicula.getCodigo() == peli.getCodigo()) {
-				esta = true;
-				break;
-			}
-		}
+	public void devolverPeli(int codigo) {
+		Pelicula peli=buscarPeli(codigo);
 		// Si la pelicula esta alquilada
-		if (esta) {
+		if (peli!=null) {
 			// Guardo su imagen para el historial
 			HashMap<String, String> imagenPelicula = new HashMap<>();
 			// Codigo y titulo
@@ -73,17 +66,10 @@ public class Cliente {
 	}
 
 	// Metodo para borrar pelicula
-	public void borrarPeli(Pelicula peli) {
-		// Busco si la pelicula pedida pertenece al cliente
-		boolean esta = false;
-		for (Pelicula pelicula : alquilado) {
-			if (pelicula.getCodigo() == peli.getCodigo()) {
-				esta = true;
-				break;
-			}
-		}
+	public void borrarPeli(int codigo) {
+		Pelicula peli=buscarPeli(codigo);
 		// Si la pelicula esta alquilada
-		if (esta) {
+		if (peli!=null) {
 			// Guardo su imagen para el historial
 			HashMap<String, String> imagenPelicula = new HashMap<>();
 			// Codigo y titulo
@@ -115,6 +101,10 @@ public class Cliente {
 		}
 	}
 
+	//Metodo para buscar un peli alquilado
+	public Pelicula buscarPeli(int codigo) {
+		return alquilado.stream().filter(pelicula -> codigo==pelicula.getCodigo() ).findFirst().orElse(null);
+	}
 	// El toString de cliente
 	@Override
 	public String toString() {

@@ -36,7 +36,8 @@ public class Pelicula extends Producto {
 	// El metodo para devolver el precio de multa por los dias retrasados por nuestra 
 	// Tambien ese metodo maneja la devuelta de una pelicula
 	public double devolverse() {
-		this.alquilador.devolverPeli(this);
+		if(this.estaAlquilada()) {
+			this.alquilador.devolverPeli(super.getCodigo());
 		this.alquilador=null;
 		double precio=0;
 		if(diasAlquiler<0) {
@@ -48,6 +49,11 @@ public class Pelicula extends Producto {
 			System.out.println("PELICULA HA SIDO DEVUELTA SIN RETRASO");
 		}
 		return precio;
+		}
+		else {
+			System.out.println("LA PELICULA NO ESTA ALQUILADA");
+			return 0;
+		}
 	}
 
 	// Combrueba si la pelicula esta en alquiler
@@ -86,8 +92,15 @@ public class Pelicula extends Producto {
 		// Si la pelicula esta alquilado pinto su codigo, nombre, tipo y las dias que la
 		// quedan en el alquiler
 		else {
-			return super.toString() + " - PELICULA - " + tipo.name() + " todavia lo quedan " + diasAlquiler
-					+ " dias de alquiler";
+			if(diasAlquiler<0) {
+				return super.toString() + " - PELICULA - " + tipo.name() + " se retrasa " + (diasAlquiler*-1)
+						+ " dias en devolver - ALQUILADA POR CLIENTE " + alquilador.getCodigo() ;
+			}
+			else {
+				return super.toString() + " - PELICULA - " + tipo.name() + " todavia lo quedan " + diasAlquiler
+					+ " dias de alquiler - ALQUILADA POR CLIENTE " + alquilador.getCodigo() ;
+			}
+			
 		}
 
 	}

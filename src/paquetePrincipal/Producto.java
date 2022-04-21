@@ -33,7 +33,8 @@ public class Producto {
 
 		}
 	}
-
+	
+	
 	// El toString
 	@Override
 	public String toString() {
