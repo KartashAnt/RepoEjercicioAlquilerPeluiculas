@@ -38,9 +38,10 @@ public class Principal {
 					"7.- Devolver pelicula\n" +
 					"8.- Vender disco\n" + 
 					"9.- Ver peliculas en alquiler\n" + 
-					"10.- Ver retrasos" +
-					"11.- Ver ganancias\n" + 
-					"12.- Pasar al dia siguiente");
+					"10.- Ver retrasos\n" +
+					"11.- Buscar cliente\n" +
+					"12.- Ver ganancias\n" + 
+					"13.- Pasar al dia siguiente");
 			// Eligimos una opcion
 			int entrada = enteroNoNegativo();
 
@@ -87,12 +88,16 @@ public class Principal {
 			case 10:
 				verPeliculasRetrasadas();
 				break;
-			// Mostrar ganancias
+			//Buscar Cliente
 			case 11:
+				buscarCliente();
+				break;
+			// Mostrar ganancias
+			case 12:
 				mostrarGanancias();
 				break;
 			// Paso de un dia
-			case 12:
+			case 13:
 				pasarDia();
 				break;
 			// Opcion invalida
@@ -444,6 +449,23 @@ public class Principal {
 			System.out.println(pelicula);
 		}
 		
+	}
+	// Buscar cliente
+	public static void buscarCliente() {
+		if(clientes.size()==0) {
+			System.out.println("NO HAY CLIENTES AGREGADOS");
+			return;
+		}
+		listarClientes();
+		System.out.println("Elige un cliente:");
+		Cliente cliente=clientePorID(enteroNoNegativo());
+		if(cliente==null) {
+			System.out.println("Cliente no existe");
+		}
+		else {
+			System.out.println(cliente);
+			cliente.listar(true, true);
+		}
 	}
 	// Muestra de las ganancias
 	public static void mostrarGanancias() {

@@ -59,6 +59,7 @@ public class Cliente {
 				imagenPelicula.put("retraso", "entregado con retraso de " + (0 - dias) + "dias");
 			}
 			historial.add(imagenPelicula);
+			alquilado.remove(peli);
 		} else {
 			System.out.println("La pelicula no esta alquilada por el cliente");
 		}
