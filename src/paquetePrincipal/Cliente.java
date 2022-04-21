@@ -17,7 +17,7 @@ public class Cliente {
 	// Peliculas que un cliente tiene alquilado de momebnto y todas la peliculas
 	// alquiladas en algun momento temporal por el cliente
 	private ArrayList<Pelicula> alquilado = new ArrayList<>();
-	private ArrayList<HashMap<String, String>> historial = new ArrayList<>();
+	private ArrayList<String> historial = new ArrayList<>();
 
 	// Constructor con todos los datos
 	public Cliente(String nombre, String apellidos, String dni) {
@@ -45,18 +45,18 @@ public class Cliente {
 		// Si la pelicula esta alquilada
 		if (peli!=null) {
 			// Guardo su imagen para el historial
-			HashMap<String, String> imagenPelicula = new HashMap<>();
+			String imagenPelicula = "";
 			// Codigo y titulo
-			imagenPelicula.put("codigo", Integer.toString(peli.getCodigo()));
-			imagenPelicula.put("titulo", peli.getTitulo());
+			imagenPelicula+=Integer.toString(peli.getCodigo())+" - ";
+			imagenPelicula+=peli.getTitulo()+" - ";
 			// Retraso de la devuelta
 			int dias = peli.getDiasAlquiler();
 			if (dias > 0) {
-				imagenPelicula.put("retraso", "entragado con adelantado de " + dias + " dias");
+				imagenPelicula+="entragado con adelantado de " + dias + " dias";
 			} else if (dias == 0) {
-				imagenPelicula.put("retraso", "entregado");
+				imagenPelicula+="entregado";
 			} else {
-				imagenPelicula.put("retraso", "entregado con retraso de " + (0 - dias) + "dias");
+				imagenPelicula+="entregado con retraso de " + (0 - dias) + "dias";
 			}
 			historial.add(imagenPelicula);
 			alquilado.remove(peli);
@@ -72,12 +72,14 @@ public class Cliente {
 		// Si la pelicula esta alquilada
 		if (peli!=null) {
 			// Guardo su imagen para el historial
-			HashMap<String, String> imagenPelicula = new HashMap<>();
+			String imagenPelicula = "";
 			// Codigo y titulo
-			imagenPelicula.put("codigo", Integer.toString(peli.getCodigo()));
-			imagenPelicula.put("titulo", peli.getTitulo());
+			imagenPelicula+=Integer.toString(peli.getCodigo())+" - ";
+			imagenPelicula+=peli.getTitulo()+" - ";
 			// Retraso de la devuelta
-			imagenPelicula.put("retraso", "no ha sido devuelto");
+			imagenPelicula+="no ha sido devuelto";
+			historial.add(imagenPelicula);
+			alquilado.remove(peli);
 		} else {
 			System.out.println("La pelicula no esta alquilada por el cliente");
 		}
@@ -96,8 +98,7 @@ public class Cliente {
 		if (historial) {
 			System.out.println("HISTORIAL DE LAS PELICULAS ALQUILADAS POR " + this.nombre);
 			for (int i = 0; i < this.historial.size(); i++) {
-				System.out.println(this.historial.get(i).get("codigo") + " - " + this.historial.get(i).get("titulo")
-						+ " - " + this.historial.get(i).get("retraso"));
+				System.out.println(this.historial.get(i));
 			}
 		}
 	}
@@ -153,12 +154,13 @@ public class Cliente {
 		this.alquilado = alquilado;
 	}
 
-	public ArrayList<HashMap<String, String>> getHistorial() {
+	public ArrayList<String> getHistorial() {
 		return historial;
 	}
 
-	public void setHistorial(ArrayList<HashMap<String, String>> historial) {
+	public void setHistorial(ArrayList<String> historial) {
 		this.historial = historial;
 	}
-
+	
+	
 }
