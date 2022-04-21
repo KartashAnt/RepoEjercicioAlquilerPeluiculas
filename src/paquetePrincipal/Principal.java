@@ -1,6 +1,8 @@
 package paquetePrincipal;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -36,8 +38,9 @@ public class Principal {
 					"7.- Devolver pelicula\n" +
 					"8.- Vender disco\n" + 
 					"9.- Ver peliculas en alquiler\n" + 
-					"10.- Ver ganancias\n" + 
-					"11.- Pasar al dia siguiente");
+					"10.- Ver retrasos" +
+					"11.- Ver ganancias\n" + 
+					"12.- Pasar al dia siguiente");
 			// Eligimos una opcion
 			int entrada = enteroNoNegativo();
 
@@ -80,12 +83,16 @@ public class Principal {
 					System.out.println("No hay peliculas alquiladas");
 				}
 				break;
-			// Mostrar ganancias
+			//Ver peliculas que retrasan en devolver
 			case 10:
+				verPeliculasRetrasadas();
+				break;
+			// Mostrar ganancias
+			case 11:
 				mostrarGanancias();
 				break;
 			// Paso de un dia
-			case 11:
+			case 12:
 				pasarDia();
 				break;
 			// Opcion invalida
@@ -412,7 +419,32 @@ public class Principal {
 			System.out.println("No hay CDs disponibles para venta");
 
 	}
-
+	// Mostrar peliculas retrasadas en devolver
+	public static void verPeliculasRetrasadas() {
+		ArrayList<Pelicula> retrasados=new ArrayList<>();
+		for (Pelicula pelicula : peliculas) {
+			if(pelicula.estaAlquilada() && pelicula.getDiasAlquiler()<0) {
+				retrasados.add(pelicula);
+			}
+		}
+		if (retrasados.size()==0) {
+			System.out.println("NO HAY PELICULAS QUE SE RETRASAN EN DEVOLVERSE");
+			return;
+		}
+		//Para ordenar peliculas
+		Comparator<Pelicula> ordenarPorRetraso=new Comparator<Pelicula>() {
+			
+			@Override
+			public int compare(Pelicula arg0, Pelicula arg1) {
+				return arg0.getDiasAlquiler()-arg1.getDiasAlquiler();
+			}
+		};
+		Collections.sort(retrasados, ordenarPorRetraso);
+		for (Pelicula pelicula : retrasados) {
+			System.out.println(pelicula);
+		}
+		
+	}
 	// Muestra de las ganancias
 	public static void mostrarGanancias() {
 		// Ganado de alquiler

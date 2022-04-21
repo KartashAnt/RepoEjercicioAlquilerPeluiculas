@@ -94,11 +94,11 @@ public class Pelicula extends Producto {
 		else {
 			if(diasAlquiler<0) {
 				return super.toString() + " - PELICULA - " + tipo.name() + " se retrasa " + (diasAlquiler*-1)
-						+ " dias en devolver - ALQUILADA POR CLIENTE " + alquilador.getCodigo() ;
+						+ " dias en devolver - ALQUILADA POR CLIENTE " + alquilador.getCodigo() + " con Nombre " + alquilador.getNombre() ;
 			}
 			else {
 				return super.toString() + " - PELICULA - " + tipo.name() + " todavia lo quedan " + diasAlquiler
-					+ " dias de alquiler - ALQUILADA POR CLIENTE " + alquilador.getCodigo() ;
+					+ " dias de alquiler - ALQUILADA POR CLIENTE " + alquilador.getCodigo() + " con Nombre " + alquilador.getNombre() ;
 			}
 			
 		}
