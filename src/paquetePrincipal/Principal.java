@@ -18,6 +18,7 @@ public class Principal {
 	// Ganados
 	static double ganadoVenta = 0;
 	static double ganadoAlquiler = 0;
+	static double ganadoRecargo= 0;
 	// Dia
 	static int dia = 1;
 
@@ -373,8 +374,8 @@ public class Principal {
 				else {
 					Pelicula pelicula=buscarPeli(entrada);
 					if(pelicula!=null) {
-						ganadoAlquiler += pelicula.devolverse();
-						ganadoAlquiler = Math.round(ganadoAlquiler * 100.0) / 100.0;
+						ganadoRecargo += pelicula.devolverse();
+						ganadoRecargo = Math.round(ganadoAlquiler * 100.0) / 100.0;
 					}
 					else {
 						System.out.println("PELICULA NO EXISTE");
@@ -471,10 +472,12 @@ public class Principal {
 	public static void mostrarGanancias() {
 		// Ganado de alquiler
 		System.out.println("Ganado por el alquiler de las peliculas: " + ganadoAlquiler + " \u20AC");
+		//Ganado por recargo
+		System.out.println("Ganado por el recargo: " + ganadoRecargo + " \u20AC");
 		// Ganado de venta
 		System.out.println("Ganado por la venta de los discos: " + ganadoVenta + " \u20AC");
 		// Ganado total
-		System.out.println("Ganado total: " + Math.round((ganadoAlquiler + ganadoVenta) * 100.0) / 100.0 + " \u20AC");
+		System.out.println("Ganado total: " + Math.round((ganadoAlquiler +ganadoRecargo +ganadoVenta) * 100.0) / 100.0 + " \u20AC");
 	}
 
 	// Pasamos el dia
